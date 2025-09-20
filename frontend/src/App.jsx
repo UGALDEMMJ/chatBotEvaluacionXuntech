@@ -176,6 +176,7 @@ function App() {
         loadChats()
       }
     } catch (error) {
+      console.error('Error enviando mensaje:', error)
       const errorMessage = {
         id: Date.now() + 1,
         text: "Lo siento, ha ocurrido un error. Por favor intenta nuevamente.",
