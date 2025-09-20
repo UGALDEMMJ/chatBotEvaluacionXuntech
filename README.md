@@ -284,8 +284,6 @@ Este proyecto está bajo la Licencia ISC.
 
 ## 👨‍💻 Desarrolladores
 
-Desarrollado para **XumTech** - Sistema de evaluación de chatbot.
+Desarrollado para **XumTech** - Marcos Ugalde Morales.
 
 ---
-
-Para más información o soporte, contactar al equipo de desarrollo.
