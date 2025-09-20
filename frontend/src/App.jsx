@@ -52,8 +52,11 @@ function App() {
 
       if (response.ok) {
         await loadChats()
+        
+        // Si era el chat activo y no quedan más chats, limpiar todo
         if (chatId === chatIdToDelete) {
-          await createNewChat()
+          setChatId(null)
+          setMessages([])
         }
       }
     } catch (error) {
@@ -192,11 +195,47 @@ function App() {
     }
   }
 
- 
+  // ✅ Renderizado condicional basado en si hay chats
+  if (chats.length === 0) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-white text-gray-900">
+        {/* Pantalla completa centrada cuando no hay chats */}
+        <div className="text-center p-8 max-w-lg">
+          {/* Logo/Icono */}
+          <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-8">
+            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.02 9.02 0 01-5.618-1.896l-3.377.983a.5.5 0 01-.623-.627l.983-3.377A9.02 9.02 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </div>
+          
+          {/* Título */}
+          <h1 className="text-4xl font-bold text-gray-900 mb-6">
+            XumTech Assistant
+          </h1>
+          
+          {/* Descripción */}
+          <p className="text-xl text-gray-600 mb-10 leading-relaxed">
+            ¡Bienvenido! Crea tu primer chat para comenzar a conversar con nuestro asistente virtual inteligente.
+          </p>
+          
+          {/* Botón crear primer chat */}
+          <button
+            onClick={createNewChat}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-200 flex items-center space-x-3 mx-auto text-lg"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Crear mi primer chat</span>
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="h-screen flex bg-white text-gray-900">
-      {/* Sidebar blanco */}
+      {/* Sidebar con chats */}
       <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
         {/* Botón nuevo chat */}
         <div className="p-3">
@@ -211,7 +250,7 @@ function App() {
           </button>
         </div>
 
-        {/* Lista de chats CON botón eliminar */}
+        {/* Lista de chats */}
         <div className="flex-1 overflow-y-auto p-3 space-y-2">
           {chats.map((chat) => (
             <div
@@ -220,7 +259,6 @@ function App() {
                 chatId === chat._id ? 'bg-blue-50 border border-blue-200' : ''
               }`}
             >
-              {/* Botón principal del chat */}
               <button
                 onClick={() => loadChat(chat._id)}
                 className="flex-1 text-left p-3 truncate"
@@ -228,7 +266,6 @@ function App() {
                 {chat.titulo}
               </button>
 
-              {/* Botón eliminar (se muestra al hacer hover) */}
               <button
                 onClick={(e) => deleteChat(chat._id, e)}
                 className="opacity-0 group-hover:opacity-100 flex-shrink-0 p-2 mr-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-all duration-200"
@@ -243,7 +280,7 @@ function App() {
         </div>
       </div>
 
-      {/* Área principal */}
+      {/* Área principal del chat */}
       <div className="flex-1 flex flex-col">
         {/* Mensajes */}
         <div className="flex-1 overflow-y-auto">
@@ -298,7 +335,7 @@ function App() {
               <textarea
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyPress}
                 placeholder="Escribe tu mensaje..."
                 className="w-full resize-none bg-white border border-gray-300 text-gray-900 rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-500"
                 rows="1"
