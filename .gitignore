@@ -1,0 +1,8 @@
+# Ignorar node_modules en cualquier subcarpeta
+**/node_modules/
+
+# Ignorar archivos .env en cualquier subcarpeta
+**/.env
+
+# Ignorar carpetas de certificados en cualquier subcarpeta
+**/certs/
